@@ -4,6 +4,9 @@ module.exports = {
     context: path.join(__dirname, './src'),
     mode: 'development',
     devtool: 'source-map',
+    resolve: {
+        extensions: ['.ts', '.js']
+    },
     entry: {
         index: './index',
         'add-product': './add-product',
@@ -49,7 +52,7 @@ module.exports = {
                 }
             }
         }
-    },      
+    },
     devServer: {
         contentBase: __dirname, // Default (project's root directory)
         publicPath: '/dist/', // Path where bundles are
