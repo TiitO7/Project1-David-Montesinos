@@ -6,10 +6,11 @@ import { IProduct } from '../interfaces/iproduct';
 import { ICategory } from '../interfaces/icategory';
 import { IPhoto } from '../interfaces/iphoto';
 import { IUser } from '../interfaces/iuser';
-const productsTemplate = require('../templates/product.handlebars');
+import { ProductResponse, ProductsResponse } from '../interfaces/responses';
+const productsTemplate: (prod: IProduct) => string = require('../templates/product.handlebars');
 
 export class Product implements IProduct {
-    
+
     id?: number;
     title: string;
     description: string;
@@ -27,27 +28,27 @@ export class Product implements IProduct {
         Object.assign(this, prodJSON);    
     }
   
-    static async getAll() {
-        const resp = await Http.get(`${SERVER}/products`);
+    static async getAll() : Promise<Product[]> {
+        const resp = await Http.get<ProductsResponse>(`${SERVER}/products`);
         return resp.products.map(r => new Product(r));
     }
 
-    async post() {
-        const resp = await Http.post(`${SERVER}/products`, this);
+    async post() : Promise<Product>{
+        const resp = await Http.post<ProductResponse>(`${SERVER}/products`, this);
         return new Product(resp.product);
     }
 
-    async delete() {
-        await Http.delete(`${SERVER}/products/${this.id}`);
+    async delete() : Promise<void> {
+        await Http.delete<void>(`${SERVER}/products/${this.id}`);
     }
 
-    toHTML() {
-        let card = document.createElement("div");
+    toHTML() : HTMLTableRowElement {
+        let card   = document.createElement("div") as HTMLTableRowElement;
         card.classList.add("card", "shadow");
 
         let prodJSON = {
             ...this, 
-            category: this.category.name, 
+            category: this.category.name as string , 
             datePublished: moment(this.datePublished).fromNow()
         };
 

@@ -13,7 +13,7 @@ export class Http {
     }
 
     static get<T>(url: string): Promise<T> {
-        return Http.ajax('GET', url);
+        return Http.ajax<T>('GET', url);
     }
 
     static post<T>(url: string, data: any): Promise<T> {
