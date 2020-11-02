@@ -7,7 +7,7 @@ import { ICategory } from '../interfaces/icategory';
 import { IPhoto } from '../interfaces/iphoto';
 import { IUser } from '../interfaces/iuser';
 import { ProductResponse, ProductsResponse } from '../interfaces/responses';
-const productsTemplate: (prod: IProduct) => string = require('../templates/product.handlebars');
+const productsTemplate: (prod: IProduct) => string = require('../../templates/product.handlebars');
 
 export class Product implements IProduct {
 
@@ -43,22 +43,23 @@ export class Product implements IProduct {
     }
 
     toHTML() : HTMLTableRowElement {
-        let card   = document.createElement("div") as HTMLTableRowElement;
+        const card   = document.createElement("div") as HTMLTableRowElement;
         card.classList.add("card", "shadow");
 
-        let prodJSON = {
+        const prodJSON = {
             ...this, 
-            category: this.category.name as string , 
+            category: this.category.toString, 
             datePublished: moment(this.datePublished).fromNow()
         };
 
-        let prodHTML = productsTemplate(prodJSON);
+        const prodHTML = productsTemplate(prodJSON);
         card.innerHTML = prodHTML;
 
-        card.querySelector(".card-body .btn-danger").addEventListener('click', async e => {
+        
+        /*card.querySelector(".card-body .btn-danger").addEventListener('click', async e => {
             await this.delete();
             card.remove();
-        });
+        });*/
 
         return card;
     }

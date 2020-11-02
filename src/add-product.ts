@@ -1,24 +1,27 @@
-import {Product} from './product.class';
-import {Http} from './http.class';
+import {Product} from './classes/product.class';
+import {Http} from './classes/http.class';
 import {SERVER} from './constants';
+import { ICategory } from './interfaces/icategory';
+import { CategoriesResponse } from './interfaces/responses';
 
-let newProductForm = null;
-let errorMsg = null;
+let newProductForm : HTMLFormElement = null;
+let errorMsg : HTMLElement = null;
+let imagenPreview =   document.getElementById('imgPreview') as HTMLImageElement;
 
-async function validateForm(event) {
+async function validateForm(event : Event) : Promise<void> {
     event.preventDefault();
-    let title = newProductForm.title.value.trim();
-    let description = newProductForm.description.value.trim();
-    let mainPhoto = newProductForm.image.value ? document.getElementById('imgPreview').src : '';
-    let price = +newProductForm.price.value;
-    let category = +newProductForm.category.value;
+    const title = (newProductForm.title as any).value.trim();
+    const description = newProductForm.description.value.trim();
+    const mainPhoto = newProductForm.image.value ? imagenPreview.src : '';
+    const price = +newProductForm.price.value;
+    const category = +newProductForm.category.value;
 
     if(!title || !description || !mainPhoto || !price || !category) {
         errorMsg.classList.remove('hidden');
         setTimeout(() => errorMsg.classList.add('hidden'), 3000);
     } else {
         try{
-            let prod = new Product({title, mainPhoto, description, price, category});
+            const prod = new Product({title, mainPhoto, description, price, category});
             await prod.post();
             location.assign('index.html');
         } catch(e) {
@@ -27,23 +30,23 @@ async function validateForm(event) {
     }
 }
 
-function loadImage(event) {
-    let file = event.target.files[0];
-    let reader = new FileReader();
+function loadImage(event: Event) : void {
+    let file = (event.target as HTMLInputElement).files[0];
+    const reader = new FileReader();
 
     if (file) reader.readAsDataURL(file);
 
     reader.addEventListener('load', e => {
-        document.getElementById('imgPreview').src = reader.result;
+        imagenPreview.src  = reader.result as string;
     });
 }
 
-async function loadCategories() {
-    let catResp = await Http.get(`${SERVER}/categories`);
+async function loadCategories() : Promise<void> {
+    const catResp = await Http.get<CategoriesResponse>(`${SERVER}/categories`);
 
-    catResp.categories.forEach(c => {
-        let option = document.createElement('option');
-        option.value = c.id;
+    catResp.categories.forEach(c  => {
+        const option = document.createElement('option');
+        option.value = '' + c.id;
         option.innerText = c.name;
         newProductForm.category.appendChild(option);
     });
@@ -51,12 +54,11 @@ async function loadCategories() {
 }
 
 window.addEventListener('DOMContentLoaded', e => {
-    newProductForm = document.getElementById('newProduct');
+    newProductForm = document.getElementById('newProduct') as HTMLFormElement;
     errorMsg = document.getElementById('errorMsg');
 
     loadCategories();
-
-    newProductForm.image.addEventListener('change', loadImage);
+    newProductForm.image.addEventListener('change', loadImage) as string;
 
     newProductForm.addEventListener('submit', validateForm);
 });
