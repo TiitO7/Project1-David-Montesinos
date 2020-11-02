@@ -43,8 +43,8 @@ export class Product implements IProduct {
     }
 
     toHTML() : HTMLTableRowElement {
-        const card   = document.createElement("div") as HTMLTableRowElement;
-        card.classList.add("card", "shadow");
+        const card   = document.createElement('div') as HTMLTableRowElement;
+        card.classList.add('card', 'shadow');
 
         const prodJSON = {
             ...this, 
@@ -55,11 +55,12 @@ export class Product implements IProduct {
         const prodHTML = productsTemplate(prodJSON);
         card.innerHTML = prodHTML;
 
-        
-        /*card.querySelector(".card-body .btn-danger").addEventListener('click', async e => {
-            await this.delete();
-            card.remove();
-        });*/
+        if(card.querySelector('btn btn-outline-danger btn-sm')!==null){
+            card.querySelector('btn btn-outline-danger btn-sm').addEventListener('click', async e => {
+                await this.delete();
+                card.remove();
+            });
+        }      
 
         return card;
     }
