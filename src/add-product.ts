@@ -6,13 +6,13 @@ import { CategoriesResponse } from './interfaces/responses';
 
 let newProductForm : HTMLFormElement = null;
 let errorMsg : HTMLElement = null;
-let imagenPreview =   document.getElementById('imgPreview') as HTMLImageElement;
+const imagenPreview =   document.getElementById('imgPreview') as HTMLImageElement;
 
 async function validateForm(event : Event) : Promise<void> {
     event.preventDefault();
     const title = (newProductForm.title as any).value.trim();
     const description = newProductForm.description.value.trim();
-    const mainPhoto = newProductForm.image.value ? imagenPreview.src : '';
+    const mainPhoto = newProductForm.image.name ? imagenPreview.src : '';
     const price = +newProductForm.price.value;
     const category = +newProductForm.category.value;
 
@@ -31,7 +31,7 @@ async function validateForm(event : Event) : Promise<void> {
 }
 
 function loadImage(event: Event) : void {
-    let file = (event.target as HTMLInputElement).files[0];
+    const file = (event.target as HTMLInputElement).files[0];
     const reader = new FileReader();
 
     if (file) reader.readAsDataURL(file);

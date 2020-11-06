@@ -1,7 +1,7 @@
 import { SERVER } from '../constants';
 import { IUser } from '../interfaces/iuser';
 import { UserResponse } from '../interfaces/responses';
-/*import { Http } from './http.class';
+import { Http } from './http.class';
 
 export class User implements IUser {
     name?: string;
@@ -30,8 +30,9 @@ export class User implements IUser {
     async delete() : Promise<void> {
         await Http.delete<void>(`${SERVER}/auth/login/${this.id}`);
     }
+}
 
-    /* toHTML() : HTMLTableRowElement {
+/*toHTML() : HTMLTableRowElement {
         const card   = document.createElement('div') as HTMLTableRowElement;
         card.classList.add('card', 'shadow');
 
@@ -53,5 +54,3 @@ export class User implements IUser {
 
         return card;
     }*/
-
- 

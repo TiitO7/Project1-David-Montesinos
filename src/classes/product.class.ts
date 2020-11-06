@@ -47,8 +47,8 @@ export class Product implements IProduct {
         card.classList.add('card', 'shadow');
 
         const prodJSON = {
-            ...this, 
-            category: this.category.toString, 
+            ...this,
+            category: (this.category as ICategory).name, 
             datePublished: moment(this.datePublished).fromNow()
         };
 
