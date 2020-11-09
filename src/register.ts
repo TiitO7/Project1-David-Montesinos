@@ -1,4 +1,5 @@
 import * as mapboxgl from 'mapbox-gl';
+import Swal from 'sweetalert2';
 import { Auth } from './classes/auth.class';
 import { User } from './classes/user.class';
 import { IUser } from './interfaces/iuser';
@@ -24,8 +25,28 @@ async function validateForm(event : Event) : Promise<void> {
         {           
             User.post(user).then(e =>{
                 location.assign('login.html');
+            
+            }).catch(e=> {
+                const error : Promise<ErrorEvent> = e.json() as Promise<ErrorEvent>;
+                error.then((y : any) =>{
+                    let errors : string;
+                    y.message.map.foEach((x : string)=>{
+                        errors +=  x + '/n';
+                    }),
+                    Swal.fire({
+                        icon:'error',
+                        title:'Register Error',
+                        text: errors
+                    });
+                });
             });            
         }
+    }else{
+        Swal.fire({
+            icon:'error',
+            title:'Register Error',
+            text: 'Error: The emails doesnt match'
+        });
     }
 
 }

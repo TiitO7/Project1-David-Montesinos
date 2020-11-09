@@ -19,14 +19,18 @@ function showProducts(products: Product[]) : void {
 }
 
 window.addEventListener('DOMContentLoaded', e => {
-    container = document.getElementById('productsContainer') as HTMLTableElement;
-    loadProducts();
+    if(localStorage.getItem('token')){
+        container = document.getElementById('productsContainer') as HTMLTableElement;
+        loadProducts();
 
-    document.getElementById('search').addEventListener('keyup', e => {
+        document.getElementById('search').addEventListener('keyup', e => {
         
-        search = (e.target as any).value;
-        showProducts(products.filter(p => (p.title && p.title.toLowerCase().includes(search.toLowerCase())) || 
+            search = (e.target as any).value;
+            showProducts(products.filter(p => (p.title && p.title.toLowerCase().includes(search.toLowerCase())) || 
                                        (p.description && p.description.toLowerCase().includes(search.toLowerCase()))));
-    });
+        });
+    }else{
+        location.assign('login.html');
+    }
 });
 
