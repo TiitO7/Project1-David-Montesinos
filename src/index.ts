@@ -1,8 +1,10 @@
 import {Product} from './classes/product.class';
+import { User } from './classes/user.class';
 
 let container :  HTMLTableElement = null;
 let search = '';
 let products : Product[] = [];
+
 
 async function loadProducts() : Promise<void> {
     products = await Product.getAll();
@@ -21,6 +23,7 @@ window.addEventListener('DOMContentLoaded', e => {
     loadProducts();
 
     document.getElementById('search').addEventListener('keyup', e => {
+        
         search = (e.target as any).value;
         showProducts(products.filter(p => (p.title && p.title.toLowerCase().includes(search.toLowerCase())) || 
                                        (p.description && p.description.toLowerCase().includes(search.toLowerCase()))));

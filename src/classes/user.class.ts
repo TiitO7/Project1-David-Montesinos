@@ -13,18 +13,16 @@ export class User implements IUser {
     lat?: number;
     lng?: number;
 
-    constructor(userJSON : IUser) {
-        Object.assign(this, userJSON);    
-    }
+
      
     static async getUser() : Promise<UserResponse> {
         const resp = await Http.get<UserResponse>(`${SERVER}/auth/login`);
         return resp;
     }
 
-    async post() : Promise<User>{
-        const resp = await Http.post<UserResponse>(`${SERVER}/auth/login`, this);
-        return new User(resp.user);
+    static post(user:User) : Promise<string>{
+        const resp : Promise<string> =  Http.post(`${SERVER}/auth/register`, user);
+        return resp;
     }
 
     async delete() : Promise<void> {
