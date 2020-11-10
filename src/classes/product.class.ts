@@ -34,6 +34,11 @@ export class Product implements IProduct {
         return resp.products.map(r => new Product(r));
     }
 
+    static async getProduct(id : number): Promise<any>{
+        const resp = await Http.get<ProductResponse>(`${SERVER}/products/${id}`);
+        return resp;
+    }
+
     async post() : Promise<Product>{
         const resp = await Http.post<ProductResponse>(`${SERVER}/products`, this);
         return new Product(resp.product);
