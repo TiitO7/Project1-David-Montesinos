@@ -13,11 +13,17 @@ export class User implements IUser {
     lat?: number;
     lng?: number;
 
-
-     
-    static async getUser() : Promise<UserResponse> {
-        const resp = await Http.get<UserResponse>(`${SERVER}/auth/login`);
-        return resp;
+    static async getProfile(id?: number): Promise<User>{
+        return null;
+    }
+    static async saveProfile(name: string, email: string): Promise<void>{
+        return null;
+    }
+    async saveAvatar(avatar: string): Promise<string>{
+        return null;
+    }
+    static async savePassword(password: string): Promise<void>{
+        return null;
     }
 
     static post(user:User) : Promise<string>{

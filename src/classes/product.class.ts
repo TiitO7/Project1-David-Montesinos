@@ -7,6 +7,7 @@ import { ICategory } from '../interfaces/icategory';
 import { IPhoto } from '../interfaces/iphoto';
 import { IUser } from '../interfaces/iuser';
 import { ProductResponse, ProductsResponse } from '../interfaces/responses';
+import Swal from 'sweetalert2';
 const productsTemplate: (prod: IProduct) => string = require('../../templates/product.handlebars');
 
 export class Product implements IProduct {
@@ -55,12 +56,18 @@ export class Product implements IProduct {
         const prodHTML = productsTemplate(prodJSON);
         card.innerHTML = prodHTML;
 
-        if(card.querySelector('btn btn-outline-danger btn-sm')!==null){
-            card.querySelector('btn btn-outline-danger btn-sm').addEventListener('click', async e => {
-                await this.delete();
-                card.remove();
+        if(this.mine){
+            const btnDelete:HTMLElement = card.querySelector('button.btn');
+            btnDelete.addEventListener('click', e =>{
+                this.delete().then(i => card.remove()).catch(error =>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Login Error',
+                        text: error
+                    }));
             });
-        }      
+
+        }
 
         return card;
     }

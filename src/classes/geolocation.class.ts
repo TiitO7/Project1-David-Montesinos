@@ -25,5 +25,11 @@ export class Geolocation {
             );
         });
     }
+
+    /*static getLetLng() :Promise<Coordinates>{
+        return new Promise((resolve,reject)=>{
+
+        })
+    }*/
     
 }

@@ -1,6 +1,7 @@
 import * as mapboxgl from 'mapbox-gl';
 import Swal from 'sweetalert2';
 import { Auth } from './classes/auth.class';
+import { Geolocation } from './classes/geolocation.class';
 import { User } from './classes/user.class';
 import { IUser } from './interfaces/iuser';
 import { TokenResponse } from './interfaces/responses';
@@ -29,7 +30,7 @@ async function validateForm(event : Event) : Promise<void> {
             }).catch(e=> {
                 const error : Promise<ErrorEvent> = e.json() as Promise<ErrorEvent>;
                 error.then((y : any) =>{
-                    let errors : string;
+                    let errors = 'Errors: ';
                     y.message.map.foEach((x : string)=>{
                         errors +=  x + '/n';
                     }),
@@ -61,20 +62,18 @@ function loadImage(event: Event) : void {
         userImagen.src  = reader.result as string;
     });
 }
-function getMyPosition(): Promise<Position> {
-    return new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(pos =>resolve(pos)); 
-    });
+async function getMyPosition(): Promise<any> {
+    pos = await Geolocation.getLocation();
+    newUserForm.lat.value = pos.latitude;
+    newUserForm.lng.value = pos.longitude;
 }
 
 window.addEventListener('DOMContentLoaded', async e => {
     newUserForm = document.getElementById('form-register') as HTMLFormElement;
     errorMsg = document.getElementById('errorMsg');
-
+    getMyPosition();
     newUserForm.avatar.addEventListener('change', loadImage) as string;
     
-    pos = await getMyPosition();
-    newUserForm.lat.value = pos.coords.latitude;
-    newUserForm.lng.value = pos.coords.longitude;
+
     newUserForm.addEventListener('submit', validateForm);
 });
