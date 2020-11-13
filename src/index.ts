@@ -5,10 +5,10 @@ let container :  HTMLTableElement = null;
 let search = '';
 let products : Product[] = [];
 
-
 async function loadProducts() : Promise<void> {
     products = await Product.getAll();
     showProducts(products);
+
 }
 
 function showProducts(products: Product[]) : void {

@@ -11,8 +11,6 @@ let map: mapboxgl.Map = null;
 let productDetailsForm : HTMLFormElement = null;
 let productDetails : HTMLDivElement = null;
 let id : any;
-let latLng : any ;
-let pos:any;
 (mapboxgl.accessToken as string) = MAPBOX_TOKEN;
 
 function createMap(prod : Product) : void{

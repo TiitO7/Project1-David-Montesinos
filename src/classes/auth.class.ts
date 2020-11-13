@@ -9,6 +9,12 @@ export class Auth {
     lat?: number;
     lng?: number;
 
+    constructor(user:IUser){
+        this.email = user.email;
+        this.password = user.password;
+        this.lat = user.lat;
+        this.lng = user.lng;
+    }
 
     static async login( userInfo: IUser) : Promise<void>{
         const resp = await Http.post<TokenResponse>(`$(SERVER)/auth/login`,userInfo);

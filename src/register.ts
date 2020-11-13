@@ -30,10 +30,7 @@ async function validateForm(event : Event) : Promise<void> {
             }).catch(e=> {
                 const error : Promise<ErrorEvent> = e.json() as Promise<ErrorEvent>;
                 error.then((y : any) =>{
-                    let errors = 'Errors: ';
-                    y.message.map.foEach((x : string)=>{
-                        errors +=  x + '/n';
-                    }),
+                    let errors : string = y.message.join('\n');                    
                     Swal.fire({
                         icon:'error',
                         title:'Register Error',

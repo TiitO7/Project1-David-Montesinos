@@ -1,7 +1,9 @@
+import Swal from 'sweetalert2';
 import { SERVER } from '../constants';
 import { IUser } from '../interfaces/iuser';
 import { UserResponse } from '../interfaces/responses';
 import { Http } from './http.class';
+const userTemplate: (user: IUser) => string = require('../../templates/profile.handlebars');
 
 export class User implements IUser {
     name?: string;
@@ -13,8 +15,14 @@ export class User implements IUser {
     lat?: number;
     lng?: number;
 
-    static async getProfile(id?: number): Promise<User>{
-        return null;
+
+    static async getProfile(id?: number): Promise<UserResponse>{
+        if(id){
+            return Http.get(`${SERVER}/users/${id}`);
+        }
+        else{
+            return Http.get(`${SERVER}/users/me`);
+        }
     }
     static async saveProfile(name: string, email: string): Promise<void>{
         return null;
@@ -34,27 +42,21 @@ export class User implements IUser {
     async delete() : Promise<void> {
         await Http.delete<void>(`${SERVER}/auth/login/${this.id}`);
     }
-}
 
-/*toHTML() : HTMLTableRowElement {
+
+    toHTML() : HTMLTableRowElement {
         const card   = document.createElement('div') as HTMLTableRowElement;
         card.classList.add('card', 'shadow');
 
-        const prodJSON = {
+        const userJSON = {
             ...this, 
-            category: this.category.toString, 
-            datePublished: moment(this.datePublished).fromNow()
+
         };
 
-        const prodHTML = productsTemplate(prodJSON);
-        card.innerHTML = prodHTML;
-
-        if(card.querySelector('btn btn-outline-danger btn-sm')!==null){
-            card.querySelector('btn btn-outline-danger btn-sm').addEventListener('click', async e => {
-                await this.delete();
-                card.remove();
-            });
-        }      
+        const userHTML = userTemplate(userJSON);
+        card.innerHTML = userHTML;
+        
 
         return card;
-    }*/
+    }
+}
