@@ -24,14 +24,18 @@ export class User implements IUser {
             return Http.get(`${SERVER}/users/me`);
         }
     }
-    static async saveProfile(name: string, email: string): Promise<void>{
-        return null;
+    static async saveProfile(name: string, email: string): Promise<User>{
+
+        let user = new User () as User;
+        user.email = email;
+        user.name = name;
+        return Http.put<User>(`${SERVER}/users/me`,user);
     }
-    async saveAvatar(avatar: string): Promise<string>{
-        return null;
+    static async saveAvatar(avatar: string): Promise<void>{
+        return Http.put<void>(`${SERVER}/users/photo`,avatar);
     }
-    static async savePassword(password: string): Promise<void>{
-        return null;
+    static async savePassword(password: string): Promise<string>{
+        return Http.put<string>(`${SERVER}/users/password`,password);
     }
 
     static post(user:User) : Promise<string>{
