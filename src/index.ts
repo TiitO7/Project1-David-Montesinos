@@ -7,20 +7,8 @@ let search = '';
 let products : Product[] = [];
 
 async function loadProducts() : Promise<void> {
-    Product.getAll().then( ()=>{
-        showProducts(products);
-    }).catch(e=> {
-        const error : Promise<ErrorEvent> = e.json() as Promise<ErrorEvent>;
-        error.then((y : any) =>{
-            const errors : string = y.message.join('\n');                    
-            Swal.fire({
-                icon:'error',
-                title:'Register Error',
-                text: errors
-            });
-        });
-    });
-
+    products = await Product.getAll();
+    showProducts(products);
 }
 
 function showProducts(products: Product[]) : void {
