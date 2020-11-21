@@ -1,13 +1,25 @@
+import Swal from 'sweetalert2';
 import {Product} from './classes/product.class';
-import { User } from './classes/user.class';
+
 
 let container :  HTMLTableElement = null;
 let search = '';
 let products : Product[] = [];
 
 async function loadProducts() : Promise<void> {
-    products = await Product.getAll();
-    showProducts(products);
+    Product.getAll().then( ()=>{
+        showProducts(products);
+    }).catch(e=> {
+        const error : Promise<ErrorEvent> = e.json() as Promise<ErrorEvent>;
+        error.then((y : any) =>{
+            const errors : string = y.message.join('\n');                    
+            Swal.fire({
+                icon:'error',
+                title:'Register Error',
+                text: errors
+            });
+        });
+    });
 
 }
 

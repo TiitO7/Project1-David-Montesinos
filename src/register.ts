@@ -1,10 +1,8 @@
-import * as mapboxgl from 'mapbox-gl';
 import Swal from 'sweetalert2';
-import { Auth } from './classes/auth.class';
 import { Geolocation } from './classes/geolocation.class';
 import { User } from './classes/user.class';
-import { IUser } from './interfaces/iuser';
-import { TokenResponse } from './interfaces/responses';
+
+
 
 let newUserForm : HTMLFormElement = null;
 let errorMsg : HTMLElement = null;

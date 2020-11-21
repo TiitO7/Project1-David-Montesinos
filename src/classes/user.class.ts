@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2';
 import { SERVER } from '../constants';
 import { IUser } from '../interfaces/iuser';
-import { UserResponse } from '../interfaces/responses';
+import { PhotoResponse, UserResponse } from '../interfaces/responses';
 import { Http } from './http.class';
 const userTemplate: (user: IUser) => string = require('../../templates/profile.handlebars');
 
@@ -24,18 +24,17 @@ export class User implements IUser {
             return Http.get(`${SERVER}/users/me`);
         }
     }
-    static async saveProfile(name: string, email: string): Promise<User>{
-
-        let user = new User () as User;
-        user.email = email;
-        user.name = name;
-        return Http.put<User>(`${SERVER}/users/me`,user);
+    static async saveProfile(name: string, email: string): Promise<void>{
+        const data = await Http.put<void>(`${SERVER}/users/me`,{name,email});
+        return data;
     }
-    static async saveAvatar(avatar: string): Promise<void>{
-        return Http.put<void>(`${SERVER}/users/photo`,avatar);
+    static async saveAvatar(photo: string): Promise<PhotoResponse>{
+        const data = await Http.put<PhotoResponse>(`${SERVER}/users/me/photo`,{photo:photo});
+        return data;
     }
     static async savePassword(password: string): Promise<string>{
-        return Http.put<string>(`${SERVER}/users/password`,password);
+        const data= await Http.put<string>(`${SERVER}/users/me/password`,{password});
+        return data;
     }
 
     static post(user:User) : Promise<string>{

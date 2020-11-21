@@ -1,17 +1,17 @@
 import * as mapboxgl from 'mapbox-gl';
 import Swal from 'sweetalert2';
-import { Product } from './classes/product.class';
+import { Auth } from './classes/auth.class';
 import { User } from './classes/user.class';
 import { MAPBOX_TOKEN } from './constants';
-import { IProduct } from './interfaces/iproduct';
-import { IUser } from './interfaces/iuser';
-import { ProductResponse } from './interfaces/responses';
+
 
 let mapDiv: HTMLDivElement = null;
 let map: mapboxgl.Map = null;
-let userDetailsForm : HTMLFormElement = null;
+let userDetailsForm: HTMLFormElement = null;
 let userDetails : HTMLDivElement = null;
 let id : number;
+let btnLogOut :  HTMLElement= null;
+
 (mapboxgl.accessToken as string) = MAPBOX_TOKEN;
 
 function createMap(user : User) : void{
@@ -30,7 +30,8 @@ function createMarker(color: string, user : User) : void {
 
 }
 
-function loadUserContainer(id : number) : void {  
+function loadUserContainer(id : number) : void {
+    event.preventDefault();  
     userDetails = document.getElementById('profile') as HTMLDivElement;                
     User.getProfile(id).then(e =>{
         const user  = new User();
@@ -56,11 +57,19 @@ function loadUserContainer(id : number) : void {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-
-    mapDiv = document.getElementById('map') as HTMLDivElement;
-    userDetailsForm = document.getElementById('container') as HTMLFormElement;
-    id = parseInt(location.search.split('=')[1]);    
-    loadUserContainer(id);
-    
+    if(localStorage.getItem('token')){
+        btnLogOut = document.getElementById('logout') as HTMLElement;
+        btnLogOut.addEventListener('click', () => {
+            Auth.logout();
+            Auth.checkToken().catch(()=>location.assign('login.html'));
+        }); 
+        mapDiv = document.getElementById('map') as HTMLDivElement;
+        userDetailsForm = document.getElementById('container') as HTMLFormElement;
+        id = parseInt(location.search.split('=')[1]);
+        
+        loadUserContainer(id);
+    }else{
+        location.assign('login.html');
+    }
     
 });

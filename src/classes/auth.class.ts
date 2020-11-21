@@ -32,6 +32,7 @@ export class Auth {
             }catch(e){
                 if(e.status && e.status === 401){
                     localStorage.removeItem('token');
+                    location.assign("login.html");
                 }
                 throw new Error();
             }
