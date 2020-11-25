@@ -57,19 +57,18 @@ function loadUserContainer(id : number) : void {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    if(localStorage.getItem('token')){
-        btnLogOut = document.getElementById('logout') as HTMLElement;
-        btnLogOut.addEventListener('click', () => {
-            Auth.logout();
-            Auth.checkToken().catch(()=>location.assign('login.html'));
-        }); 
-        mapDiv = document.getElementById('map') as HTMLDivElement;
-        userDetailsForm = document.getElementById('container') as HTMLFormElement;
-        id = parseInt(location.search.split('=')[1]);
+    Auth.checkToken().catch(()=>location.assign('login.html'));
+
+    
+    btnLogOut = document.getElementById('logout') as HTMLElement;
+    btnLogOut.addEventListener('click', () => {
+        Auth.logout();
+    }); 
+    mapDiv = document.getElementById('map') as HTMLDivElement;
+    userDetailsForm = document.getElementById('container') as HTMLFormElement;
+    id = parseInt(location.search.split('=')[1]);
         
-        loadUserContainer(id);
-    }else{
-        location.assign('login.html');
-    }
+    loadUserContainer(id);
+    
     
 });
